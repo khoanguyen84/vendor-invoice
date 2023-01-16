@@ -14,4 +14,4 @@
 
 ## Kết quả
 + Link git: https://github.com/khoanguyen84/vendor-invoice
-+ Link sản phẩm: 
++ Link sản phẩm: https://khoanguyen84.github.io/vendor-invoice/
