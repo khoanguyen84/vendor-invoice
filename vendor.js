@@ -8,13 +8,25 @@ class Vendor {
     }
 }
 
-var invoices = [
-    new Vendor(1, "iPhone 14 Pro Max", 1, 30000000),
-    new Vendor(2, "iPhone 13", 3, 15000000),
-    new Vendor(3, "Latop Dell", 2, 18000000),
-    new Vendor(4, "Apple Watch", 4, 7500000),
-    new Vendor(5, "Mac Book", 2, 33000000),
-]
+var invoices = [];
+
+const key = "invoice_data";
+
+function initData() {
+    if (localStorage.getItem(key) == null) {
+        invoices = [
+            new Vendor(1, "iPhone 14 Pro Max", 1, 30000000),
+            new Vendor(2, "iPhone 13", 3, 15000000),
+            new Vendor(3, "Latop Dell", 2, 18000000),
+            new Vendor(4, "Apple Watch", 4, 7500000),
+            new Vendor(5, "Mac Book", 2, 33000000),
+        ]
+        localStorage.setItem(key, JSON.stringify(invoices));
+    }
+    else{
+        invoices = JSON.parse(localStorage.getItem(key));
+    }
+}
 
 function renderVendorInvoice() {
     let tbVendor = document.getElementById('tbVendor');
@@ -57,6 +69,8 @@ function createVendor() {
 
         invoices.push(vendor);
 
+        localStorage.setItem(key, JSON.stringify(invoices));
+
         renderVendorInvoice();
 
         clearForm();
@@ -73,27 +87,28 @@ function clearForm() {
     document.getElementById('btnCancel').classList.add("d-none");
 }
 
-function findMaxId(){
+function findMaxId() {
     let max = 0;
-    for(let i = 0 ; i< invoices.length; i++){
-        if(invoices[i].id > max){
+    for (let i = 0; i < invoices.length; i++) {
+        if (invoices[i].id > max) {
             max = invoices[i].id
         }
     }
     return max;
 }
 
-function removeVendor(id){
+function removeVendor(id) {
     let confirm = window.confirm('Are you sure to remove this vendor?');
-    if(confirm == true){
-        invoices = invoices.filter(function(vendor){
+    if (confirm == true) {
+        invoices = invoices.filter(function (vendor) {
             return vendor.id != id;
         })
+        localStorage.setItem(key, JSON.stringify(invoices));
         renderVendorInvoice();
     }
 }
 
-function editVendor(id){
+function editVendor(id) {
     let vendor = findVendorById(id);
 
     document.getElementById("item").value = vendor.item;
@@ -106,20 +121,20 @@ function editVendor(id){
     document.getElementById('btnCancel').classList.remove("d-none");
 }
 
-function findVendorById(id){
-    for(let i = 0; i < invoices.length; i++){
-        if(invoices[i].id == id){
+function findVendorById(id) {
+    for (let i = 0; i < invoices.length; i++) {
+        if (invoices[i].id == id) {
             return invoices[i];
         }
     }
     return null;
 }
 
-function cancel(){
+function cancel() {
     clearForm();
 }
 
-function save(){
+function save() {
     let item = document.getElementById("item").value;
     let quantity = Number(document.getElementById("quantity").value);
     let price = Number(document.getElementById("price").value);
@@ -133,8 +148,16 @@ function save(){
         vendor.price = price;
         vendor.quantity = quantity;
         vendor.amount = price * quantity;
+
+        localStorage.setItem(key, JSON.stringify(invoices));
         renderVendorInvoice();
         clearForm();
     }
 }
-renderVendorInvoice();
+
+function ready() {
+    initData();
+    renderVendorInvoice();
+}
+
+ready();

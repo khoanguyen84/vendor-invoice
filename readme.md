@@ -6,6 +6,8 @@
 + Object
 + Array
 + Loop and Condition statements
++ Git
++ Local Storage
 
 ## Template
 + Pinterest: https://www.pinterest.com/pin/634092822530389577/
